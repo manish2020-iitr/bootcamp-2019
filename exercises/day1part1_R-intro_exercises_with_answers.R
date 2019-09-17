@@ -267,3 +267,35 @@ plot(gapminder07$lifeExp ~ gapminder07$gdpPercap,
      main="Relationship between life expectancy and GDP per capita in 2007", 
      ylab="Life expectancy", xlab="GDP per capita")
 abline(h=mean(gapminder07$lifeExp))
+
+
+
+getwd()
+library(readr)
+gapminder=read_csv("data/gapminder5.csv")
+gapminder07=gapminder[gapminder$year==2007,]
+gapminder07$lifeExp_round =  round(gapminder07$ lifeExp)
+gapminder07$lifeExp_over70 = NA
+gapminder07$lifeExp_over70[gapminder07$ lifeExp  > 70 ]='YES'
+gapminder07$lifeExp_over70[gapminder07$ lifeExp  < 70 ]='NO'
+gapminder07$lifeExp_highlow= NA
+gapminder07$lifeExp_highlow[gapminder07$ lifeExp > mean(gapminder07$ lifeExp)] = 'HIGH'
+gapminder07$lifeExp_highlow[gapminder07$ lifeExp < mean(gapminder07$ lifeExp)] = 'LOW'
+table(gapminder07$lifeExp_highlow)
+aggregate(gapminder07$lifeExp ~ gapminder07$continent , FUN= mean)
+cor(gapminder07$lifeExp, gapminder07$gdpPercap)
+t1 <- t.test(gapminder07$gdpPercap~gapminder07$lifeExp_highlow)
+t1
+typeof(t1)
+reg1=lm(gapminder07$lifeExp ~ gapminder07$gdpPercap + gapminder07$pop)
+reg1
+typeof(reg1)
+reg1[1]
+reg1[0]
+length(reg1)
+summary(reg1)
+write.csv(gapminder07, file = "data/gapminder07.csv", row.names = FALSE)
+hist(gapminder07$lifeExp,main = "Distribution of life exoectancy across country in 2007",xlab="Life expectency",ylab="Frequency")
+plot(gapminder07$lifeExp~gapminder07$gdpPercap,xlab="gdp/capita",ylab="life_expectency",main="life expectency vs gdp/capita")
+abline(h=mean(gapminder07$lifeExp))
+
